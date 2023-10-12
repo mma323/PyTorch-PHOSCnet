@@ -49,14 +49,28 @@ class PHOSCnet(nn.Module):
 
        self.temporal_pool = TemporalPyramidPooling([1, 2, 4])
 
-
+       in_features_from_conv = 4096
+        
        self.phos = nn.Sequential(
-           
-
+           nn.Linear(in_features=in_features_from_conv, out_features=4096),
+           nn.ReLU(),
+           nn.Dropout(p=0.5),
+           nn.Linear(in_features=4096, out_features=4096),
+           nn.ReLU(),
+           nn.Dropout(p=0.5),
+           nn.Linear(in_features=4096, out_features=165),
+           nn.ReLU()
         )
 
        self.phoc = nn.Sequential(
-
+              nn.Linear(in_features=in_features_from_conv, out_features=4096),
+              nn.ReLU(),
+              nn.Dropout(p=0.5),
+              nn.Linear(in_features=4096, out_features=4096),
+              nn.ReLU(),
+              nn.Dropout(p=0.5),
+              nn.Linear(in_features=4096, out_features=604),
+              nn.Sigmoid()
         )
 
 
