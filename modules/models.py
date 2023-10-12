@@ -13,18 +13,64 @@ __all__ = [
 
 class PHOSCnet(nn.Module):
     def __init__(self):
-        super().__init__()
+       super(PHOSCnet, self).__init__()
 
-        self.conv = nn.Sequential(
+       self.conv = nn.Sequential(
+            nn.Conv2d(3, 64, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(64, 64, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+            nn.Conv2d(64, 128, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(128, 128, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+            nn.Conv2d(128, 256, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(256, 256, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(256, 256, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(256, 256, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(256, 256, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(256, 256, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(256, 512, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(512, 512, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(512, 512, kernel_size=3, padding=1),
+            nn.ReLU()
         )
 
-        self.temporal_pool = TemporalPyramidPooling([1, 2, 5])
+       self.temporal_pool = TemporalPyramidPooling([1, 2, 4])
 
-        self.phos = nn.Sequential(
+       self.phos = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(512, 4096),
+            nn.ReLU(),
+            nn.Dropout(0.5),
+            nn.Linear(4096, 4096),
+            nn.ReLU(),
+            nn.Dropout(0.5),
+            nn.Linear(4096, 165)
         )
 
-        self.phoc = nn.Sequential(
+       self.phoc = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(512, 4096),
+            nn.ReLU(),
+            nn.Dropout(0.5),
+            nn.Linear(4096, 4096),
+            nn.ReLU(),
+            nn.Dropout(0.5),
+            nn.Linear(4096, 604),
+            nn.Sigmoid()
         )
+
 
     def forward(self, x: torch.Tensor) -> dict:
         x = self.conv(x)
