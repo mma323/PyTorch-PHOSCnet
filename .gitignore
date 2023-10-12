@@ -159,5 +159,5 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-#Ignore dataset folder in order to avoid freezing at "git add ."
+#Ignore dataset folders to avoid uploading them to github
 dte2502_ga01_small
