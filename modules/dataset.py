@@ -9,7 +9,6 @@ from utils import generate_phoc_vector, generate_phos_vector
 import pandas as pd
 import numpy as np
 
-
 class phosc_dataset(Dataset):
     def __init__(self, csvfile, root_dir, transform=None, calc_phosc=True):
         # Fill in your code here. You will populate self.df_all
@@ -18,8 +17,25 @@ class phosc_dataset(Dataset):
         # phosc features vector can be created combining generate_phos_vector, generate_phoc_vector
         # Note: How to use phoc, phoc or phosc of the df in a batch is up to you.
         # in the __getitem__ below the phosc vector is used in the batches.
-        pass
 
+       self.root_dir = root_dir
+       self.csvfile_path = os.path.join(root_dir, csvfile)
+       self.df_all = pd.read_csv(self.csvfile_path)
+       self.transform = transform
+       self.calc_phosc = calc_phosc
+
+       #phos column
+       self.df_all['phos'] = self.df_all['Word'].apply(lambda x: generate_phos_vector(x))
+
+       #phoc column
+       self.df_all['phoc'] = self.df_all['Word'].apply(lambda x: generate_phoc_vector(x))
+
+       #combine phos and phoc columns to phosc column
+       if self.calc_phosc:
+            self.df_all['phosc'] = self.df_all.apply(lambda x: np.concatenate((x['phos'], x['phoc'])), axis=1)
+    
+        
+        
     def __getitem__(self, index):
         img_path = os.path.join(self.root_dir, self.df_all.iloc[index, 0])
         image = io.imread(img_path)
