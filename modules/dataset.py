@@ -19,8 +19,9 @@ class phosc_dataset(Dataset):
         # in the __getitem__ below the phosc vector is used in the batches.
 
        self.root_dir = root_dir
-       self.csvfile_path = os.path.join(root_dir, csvfile)
-       self.df_all = pd.read_csv(self.csvfile_path)
+       #self.csvfile_path = os.path.join(root_dir, csvfile)
+       self.df_all = pd.read_csv(csvfile)
+
        self.transform = transform
        self.calc_phosc = calc_phosc
 
@@ -33,7 +34,6 @@ class phosc_dataset(Dataset):
        #combine phos and phoc columns to phosc column
        if self.calc_phosc:
             self.df_all['phosc'] = self.df_all.apply(lambda x: np.concatenate((x['phos'], x['phoc'])), axis=1)
-    
         
         
     def __getitem__(self, index):
@@ -46,6 +46,7 @@ class phosc_dataset(Dataset):
             image = self.transform(image)
 
         return image.float(), y.float(), self.df_all.iloc[index, 1]
+
 
     def __len__(self):
         return len(self.df_all)
