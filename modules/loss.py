@@ -17,7 +17,6 @@ class PHOSCLoss(nn.Module):
     	# Note: This loss should be applicable to the PHOS part of the 
     	# output which is the first part of the output, currently 0
 
-        #phos_loss = self.phos_w * F.mse_loss(y['phos'], targets)
         phos_loss = self.phos_w * F.mse_loss(y['phos'], targets[:, :165])
         
         # Apply the loss on PHOC features this is a classification loss
