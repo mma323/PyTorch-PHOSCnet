@@ -44,14 +44,14 @@ class PHOSCnet(nn.Module):
            nn.ReLU(),
            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=(3, 3), padding=1),
            nn.ReLU(),
-           nn.Flatten()
         )
 
        self.temporal_pool = TemporalPyramidPooling([1, 2, 4])
 
-       in_features_from_conv = 4096
+       in_features_from_conv = 3584
         
        self.phos = nn.Sequential(
+           nn.Flatten(),
            nn.Linear(in_features=in_features_from_conv, out_features=4096),
            nn.ReLU(),
            nn.Dropout(p=0.5),

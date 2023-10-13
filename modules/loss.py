@@ -17,14 +17,14 @@ class PHOSCLoss(nn.Module):
     	# Note: This loss should be applicable to the PHOS part of the 
     	# output which is the first part of the output, currently 0
 
-        #phos_loss = self.phos_w * 0
-        phos_loss = F.mse_loss(y['phos'], targets)
+        #phos_loss = self.phos_w * F.mse_loss(y['phos'], targets)
+        phos_loss = self.phos_w * F.mse_loss(y['phos'], targets[:, :165])
         
         # Apply the loss on PHOC features this is a classification loss
     	# Note: This loss should be applicable to the PHOC part of the 
     	# output which is the later part of the output.
-        #phoc_loss = self.phoc_w * 0
-        phoc_loss = F.binary_cross_entropy(y['phoc'], targets)
+        phoc_loss = self.phoc_w * F.binary_cross_entropy(y['phoc'], targets[:, 165:])
 
         loss = phos_loss + phoc_loss
+
         return loss
