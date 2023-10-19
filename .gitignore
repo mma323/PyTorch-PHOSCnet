@@ -161,3 +161,8 @@ cython_debug/
 
 #Ignore dataset folders to avoid uploading them to github
 dte2502_ga01_small
+dte2502_ga01
+#Ignore results from training and testing
+epoch*
+testresults.txt
+log.csv

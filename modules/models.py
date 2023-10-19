@@ -16,59 +16,84 @@ class PHOSCnet(nn.Module):
        super(PHOSCnet, self).__init__()
 
        self.conv = nn.Sequential(
-           nn.Conv2d(in_channels=3, out_channels=64, kernel_size=(3, 3), padding=1),
+           nn.Conv2d(
+               in_channels=3, out_channels=64, kernel_size=(3, 3), padding=1
+           ),
            nn.ReLU(),
-           nn.Conv2d(in_channels=64, out_channels=64, kernel_size=(3, 3), padding=1),
+
+           nn.Conv2d(
+               in_channels=64, out_channels=64, kernel_size=(3, 3), padding=1
+           ),
            nn.ReLU(),
            nn.MaxPool2d(kernel_size=(2, 2), stride=(2, 2)),
-           nn.Conv2d(in_channels=64, out_channels=128, kernel_size=(3, 3), padding=1),
+
+           nn.Conv2d(
+               in_channels=64, out_channels=128, kernel_size=(3, 3), padding=1
+           ),
            nn.ReLU(),
-           nn.Conv2d(in_channels=128, out_channels=128, kernel_size=(3, 3), padding=1),
+
+           nn.Conv2d(
+               in_channels=128, out_channels=128, kernel_size=(3, 3), padding=1
+           ),
            nn.ReLU(),
            nn.MaxPool2d(kernel_size=(2, 2), stride=(2, 2)),
-           nn.Conv2d(in_channels=128, out_channels=256, kernel_size=(3, 3), padding=1),
+
+           nn.Conv2d(
+               in_channels=128, out_channels=256, kernel_size=(3, 3), padding=1
+           ),
            nn.ReLU(),
-           nn.Conv2d(in_channels=256, out_channels=256, kernel_size=(3, 3), padding=1),
+
+           nn.Conv2d(
+               in_channels=256, out_channels=256, kernel_size=(3, 3), padding=1
+           ),
            nn.ReLU(),
-           nn.Conv2d(in_channels=256, out_channels=256, kernel_size=(3, 3), padding=1),
+
+           #nn.Conv2d(in_channels=256, out_channels=256, kernel_size=(3, 3), padding=1),
+           #nn.ReLU(),
+           #nn.Conv2d(in_channels=256, out_channels=256, kernel_size=(3, 3), padding=1),
+           #nn.ReLU(),
+           #nn.Conv2d(in_channels=256, out_channels=256, kernel_size=(3, 3), padding=1),
+           #nn.ReLU(),
+           #nn.Conv2d(in_channels=256, out_channels=256, kernel_size=(3, 3), padding=1),
+           #nn.ReLU(),
+
+           nn.Conv2d(
+               in_channels=256, out_channels=512, kernel_size=(3, 3), padding=1
+           ),
            nn.ReLU(),
-           nn.Conv2d(in_channels=256, out_channels=256, kernel_size=(3, 3), padding=1),
-           nn.ReLU(),
-           nn.Conv2d(in_channels=256, out_channels=256, kernel_size=(3, 3), padding=1),
-           nn.ReLU(),
-           nn.Conv2d(in_channels=256, out_channels=256, kernel_size=(3, 3), padding=1),
-           nn.ReLU(),
-           nn.Conv2d(in_channels=256, out_channels=512, kernel_size=(3, 3), padding=1),
-           nn.ReLU(),
-           nn.Conv2d(in_channels=512, out_channels=512, kernel_size=(3, 3), padding=1),
-           nn.ReLU(),
-           nn.Conv2d(in_channels=512, out_channels=512, kernel_size=(3, 3), padding=1),
-           nn.ReLU(),
+
+           #nn.Conv2d(in_channels=512, out_channels=512, kernel_size=(3, 3), padding=1),
+           #nn.ReLU(),
+           #nn.Conv2d(in_channels=512, out_channels=512, kernel_size=(3, 3), padding=1),
+           #nn.ReLU(),
         )
 
-       self.temporal_pool = TemporalPyramidPooling([1, 2, 4])
-
-       in_features_from_conv = 3584
+       self.temporal_pool = TemporalPyramidPooling([1, 2, 5])
         
        self.phos = nn.Sequential(
            nn.Flatten(),
-           nn.Linear(in_features=in_features_from_conv, out_features=4096),
-           nn.ReLU(),
-           nn.Dropout(p=0.5),
-           nn.Linear(in_features=4096, out_features=4096),
-           nn.ReLU(),
-           nn.Dropout(p=0.5),
+
+           #nn.Linear(in_features=4096, out_features=4096),
+           #nn.ReLU(),
+           #nn.Dropout(p=0.5),
+           #nn.Linear(in_features=4096, out_features=4096),
+           #nn.ReLU(),
+           #nn.Dropout(p=0.5),
+
            nn.Linear(in_features=4096, out_features=165),
            nn.ReLU()
         )
 
        self.phoc = nn.Sequential(
-              nn.Linear(in_features=in_features_from_conv, out_features=4096),
-              nn.ReLU(),
-              nn.Dropout(p=0.5),
-              nn.Linear(in_features=4096, out_features=4096),
-              nn.ReLU(),
-              nn.Dropout(p=0.5),
+              nn.Flatten(),
+
+              #nn.Linear(in_features=4096, out_features=4096),
+              #nn.ReLU(),
+              #nn.Dropout(p=0.5),
+              #nn.Linear(in_features=4096, out_features=4096),
+              #nn.ReLU(),
+              #nn.Dropout(p=0.5),
+
               nn.Linear(in_features=4096, out_features=604),
               nn.Sigmoid()
         )
